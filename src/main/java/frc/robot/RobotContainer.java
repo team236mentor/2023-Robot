@@ -3,48 +3,35 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import frc.robot.Constants;
-import frc.robot.Constants.ArmConstants;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.TurretConstants;
 import frc.robot.commands.Arm.ArmExtend;
-import frc.robot.commands.Arm.ArmPID;
 import frc.robot.commands.Arm.ArmRetract;
-import frc.robot.commands.Arm.ArmWithAxis;
-import frc.robot.commands.Autos.AutoPIDDrive;
-import frc.robot.commands.Autos.AutoTrapezoidalPID;
 import frc.robot.commands.Autos.DriveAtSetSpeed;
-import frc.robot.commands.Autos.GrabScoreFlatGround;
-import frc.robot.commands.Autos.TurnPID;
 import frc.robot.commands.Drive.DoubleArcadeDrive;
-//import frc.robot.commands.Drive.DriveWithJoysticks;
-import frc.robot.commands.Drive.TDWG_No;
 import frc.robot.commands.Drive.ToggleTransmission;
 //import frc.robot.commands.Drive.DriveWithJoysticks;
 import frc.robot.commands.Gripper.Grab;
 import frc.robot.commands.Gripper.GrabReleaseToggle;
 import frc.robot.commands.Gripper.ReleasePiece;
 import frc.robot.commands.Pivot.PivotDown;
-import frc.robot.commands.Pivot.Pivot45PID;
 import frc.robot.commands.Pivot.PivotUp;
-import frc.robot.commands.Targeting.AprilFollow;
 import frc.robot.commands.Targeting.LLAngle;
-import frc.robot.commands.Targeting.LLDistance;
+import frc.robot.commands.Targeting.LLTagAngle;
+import frc.robot.commands.Targeting.LLTagDistance;
 import frc.robot.commands.Turret.TurretCCW;
 import frc.robot.commands.Turret.TurretCW;
-import frc.robot.commands.Turret.TurretPID;
-import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Turret;
-import org.photonvision.PhotonCamera;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -52,14 +39,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  //**JOYSTICKS */
+//**JOYSTICKS */
   XboxController controller = new XboxController(Constants.ControllerConstants.USB_AUXCONTROLLER);
   XboxController driveController = new XboxController(Constants.ControllerConstants.USB_DRIVECONTROLLER);
-  // SUBSYSTEMS****.
+  
+// SUBSYSTEMS****.
   private final Drive drive = new Drive();
   private final Arm arm = new Arm();
   private final Gripper gripper = new Gripper();
   private final Turret turret = new Turret();
+  private final Limelight camera = new Limelight();
 
   //COMMANDS****
   //AUTO
@@ -67,7 +56,8 @@ public class RobotContainer {
   //DRIVE
  private final DoubleArcadeDrive doubleArcadeDrive = new DoubleArcadeDrive(drive, gripper, driveController);
  private final ToggleTransmission toggleTransmission = new ToggleTransmission(drive);
- private final LLAngle llAngle = new LLAngle(drive, 0);  //must pass in the pipeline
+//  private final LLTagAngle llDriveAngle = new LLTagAngle(drive, 7, camera);  //must pass in the pipeline
+
   /** Creates a new DriveToCS. */
  private final  DriveAtSetSpeed driveAtSetSpeed = new DriveAtSetSpeed(drive, 130, 0.5);
 
@@ -130,12 +120,14 @@ private final TurretCCW turretCCW = new TurretCCW(turret, -TurretConstants.TURRE
     JoystickButton menu1 = new JoystickButton(controller, ControllerConstants.XboxController.MENU);
     POVButton upPov1 = new POVButton(controller, Constants.ControllerConstants.XboxController.POVXbox.UP_ANGLE);
     POVButton downPov1 = new POVButton(controller, Constants.ControllerConstants.XboxController.POVXbox.DOWN_ANGLE);
-    // ASSIGN BUTTONS TO COMMANDS
-    //AUXController
-   //a1.whileTrue(new ArmPID(arm, 5)); // IT WORKS
+    
+// ASSIGN BUTTONS TO COMMANDS
+  //AUXController
+  //a1.whileTrue(new ArmPID(arm, 5)); // IT WORKS
   //b1.whileTrue(new Pivot45PID(arm, 350));//pass in the encoder value that equates to 45 degrees
   // y1.whileTrue(new TurretPID(turret, 3));
-   //DRIVECONTROLLER******
+
+//DRIVECONTROLLER******
    //lb.whileTrue(armRetract);
    //x.whileTrue(new LLDistance(drive, 0, 35)); //pass in pipeline# and desired distance offset in inches
   a.whileTrue(toggleTransmission);
@@ -145,8 +137,10 @@ private final TurretCCW turretCCW = new TurretCCW(turret, -TurretConstants.TURRE
  // y.whileTrue(new AutoTrapezoidalPID(drive, 220, 0.005, 0, 0));
   //rightPov.whileTrue(turretCW);
   //leftPov.whileTrue(turretCCW);
- x.whileTrue(pivotUp);
- y.whileTrue(pivotDown);
+ x.whileTrue(new LLTagAngle(drive, 7, camera));
+ 
+ double offsetDistance = Units.inchesToMeters(20); 
+ y.whileTrue(new LLTagDistance(drive, 7, offsetDistance, camera));  // 
 
 
   }
