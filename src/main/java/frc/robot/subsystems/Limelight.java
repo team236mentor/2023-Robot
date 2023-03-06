@@ -22,7 +22,7 @@ public class Limelight extends SubsystemBase {
   IntegerSubscriber tid;
   int tag;
   DoubleSubscriber txSub, tySub, areaSub;
-  IntegerPublisher pipeline, outLedMode;
+  IntegerPublisher pipeline, outLedMode,driverMode;
 
   DoubleArraySubscriber blueStationToRobotPose, redStationToRobotPose, targetToCameraPose, cameraToTargetPose; 
   DoubleArraySubscriber robotToTargetPose, targetToRobotPose, robotCameraPosition;
@@ -44,11 +44,10 @@ public class Limelight extends SubsystemBase {
     areaSub = datatable.getDoubleTopic("ta").subscribe(0.0);
 
     // publish to the topic in "datatable" called "Out"
-    pipeline = datatable.getIntegerTopic("/Limelight/getPipe").publish();
-    outLedMode = datatable.getIntegerTopic("/Limelight/ledmode").publish();
+    pipeline = datatable.getIntegerTopic("getPipe").publish();
+    outLedMode = datatable.getIntegerTopic("ledmode").publish();
+    driverMode = datatable.getIntegerTopic("drivermode").publish();
 
- 
-    
  
     //	3D transform of the camera in the coordinate system of the primary in-view AprilTag (array (6))
      targetToCameraPose = datatable.getDoubleArrayTopic("camerapose_targetspace").subscribe(new double[] {});
@@ -92,11 +91,11 @@ public void periodic() {
   // outLedMode.close();
   }
 
-  public void setPipeline(Integer i) { 
-    pipeline.set((long)i);  
+  public void setPipeline(double pipeline1) { 
+    pipeline.set((long)pipeline1);  
   }
 
-  public boolean getTv() { 
+  public boolean HasTarget() { 
      return tvSub.get() ;  
     }
 
@@ -112,7 +111,21 @@ public void periodic() {
     return tid.get();   
   }
 
- 
+  public void setLedModeOn() {
+    outLedMode.set(1);
+  }
+  
+  public void setLedModeOff() {
+    outLedMode.set(0);
+  }
+  
+  public void setDriverModeOn() {
+    driverMode.set(1);
+  }
+  
+  public void setDriverModeOff() {
+    driverMode.set(0);
+  }
 // 3D transform of the camera in the coordinate system of the primary in-view AprilTag (array (6))
 public double[] getTargetToCameraPose() {
   return targetToCameraPose.get();
