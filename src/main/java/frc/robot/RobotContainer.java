@@ -130,24 +130,26 @@ private final TurretCCW turretCCW = new TurretCCW(turret, -TurretConstants.TURRE
     JoystickButton menu1 = new JoystickButton(controller, ControllerConstants.XboxController.MENU);
     POVButton upPov1 = new POVButton(controller, Constants.ControllerConstants.XboxController.POVXbox.UP_ANGLE);
     POVButton downPov1 = new POVButton(controller, Constants.ControllerConstants.XboxController.POVXbox.DOWN_ANGLE);
-    // ASSIGN BUTTONS TO COMMANDS
-    //AUXController
-   //a1.whileTrue(new ArmPID(arm, 5)); // IT WORKS
+  
+// ASSIGN BUTTONS TO COMMANDS
+  
+  //AUXController
+  //a1.whileTrue(new ArmPID(arm, 5)); // IT WORKS
   //b1.whileTrue(new Pivot45PID(arm, 350));//pass in the encoder value that equates to 45 degrees
   // y1.whileTrue(new TurretPID(turret, 3));
-   //DRIVECONTROLLER******
+  
+//DRIVECONTROLLER******
    //lb.whileTrue(armRetract);
    //x.whileTrue(new LLDistance(drive, 0, 35)); //pass in pipeline# and desired distance offset in inches
   a.whileTrue(toggleTransmission);
   b.whileTrue(grabReleaseToggle);
   b1.whileTrue(new ArmExtend(arm, 0.3));
   x1.whileTrue(new ArmRetract(arm, 0.3));
- // y.whileTrue(new AutoTrapezoidalPID(drive, 220, 0.005, 0, 0));
+  // y.whileTrue(new AutoTrapezoidalPID(drive, 220, 0.005, 0, 0));
   //rightPov.whileTrue(turretCW);
   //leftPov.whileTrue(turretCCW);
  x.whileTrue(pivotUp);
  y.whileTrue(pivotDown);
-
 
   }
   /**
