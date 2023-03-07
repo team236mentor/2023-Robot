@@ -99,10 +99,10 @@ public final class Constants {
   public static class MotorControllers {
 
     //placeholder numbers for beginning of season //testbed OG - 2022 old - testbed swapped - 2022 new
-    public static final int ID_LEFT_FRONT = 1; //10 - 30 - 11 - 1
-    public static final int ID_RIGHT_FRONT = 2; //15 - 43 - 16 - 2
-    public static final int ID_LEFT_REAR = 3;// 11 - 44 - 10 - 3
-    public static final int ID_RIGHT_REAR = 4; //16 - 45 - 15 - 4
+    public static final int ID_LEFT_FRONT = 10; //10 - 30 - 11 - 1
+    public static final int ID_RIGHT_FRONT = 15; //15 - 43 - 16 - 2
+    public static final int ID_LEFT_REAR = 11;// 11 - 44 - 10 - 3
+    public static final int ID_RIGHT_REAR = 16; //16 - 45 - 15 - 4
 
     public static final int ID_ARM = 10;
     public static final int ID_TURRET = 15; //test value
