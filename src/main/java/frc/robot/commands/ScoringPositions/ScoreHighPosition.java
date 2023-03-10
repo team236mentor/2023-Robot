@@ -21,13 +21,12 @@ public class ScoreHighPosition extends SequentialCommandGroup {
 
   
   /** Creates a new ScoreMiddleLevel. */
-  public ScoreHighPosition(Arm hiScore, Pivot pvtHi, Gripper gripScore1) {
+  public ScoreHighPosition(Arm _hiScore, Pivot _pvtHi, Gripper _gripScore) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new PivotPID(pvtHi, PivotConstants.PVT_ENC_HIGH_SCORE),
-      new ArmPID(hiScore, Constants.ArmConstants.ARM_HIGH)//,
-      //new GrabReleaseToggle(gripScore1)
+      new PivotPID(_pvtHi, PivotConstants.PVT_ENC_HIGH_SCORE),
+      new ArmPID(_hiScore, Constants.ArmConstants.ARM_HIGH).andThen(_gripScore.toggle())
       );
       
   }
