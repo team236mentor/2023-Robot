@@ -26,7 +26,6 @@ import frc.robot.commands.Drive.TDWG_No;
 import frc.robot.commands.Drive.ToggleTransmission;
 //import frc.robot.commands.Drive.DriveWithJoysticks;
 import frc.robot.commands.Gripper.Grab;
-import frc.robot.commands.Gripper.GrabReleaseToggle;
 import frc.robot.commands.Gripper.ReleasePiece;
 import frc.robot.commands.Pivot.PivotDown;
 import frc.robot.commands.Pivot.PivotPID;
@@ -105,7 +104,6 @@ public class RobotContainer {
  //GRIPPER
 private final Grab grab = new Grab(gripper);
 private final ReleasePiece releasePiece = new ReleasePiece(gripper);
-private final GrabReleaseToggle grabReleaseToggle = new GrabReleaseToggle(gripper);
 
 //TURRET
 private final TurretCW turretCW = new TurretCW(turret, TurretConstants.TURRET_SPEED);
@@ -168,7 +166,7 @@ private final TurretCCW turretCCW = new TurretCCW(turret, -TurretConstants.TURRE
     
    //DRIVECONTROLLER******
   a.whileTrue(toggleTransmission);
-  b.whileTrue(grabReleaseToggle);
+  b.whileTrue(gripper.toggle(););
   x.whileTrue(new ScoreLow(arm, gripper, pivot));
   y.whileTrue(new PickupPosition(arm, pivot));
   rb.whileTrue(new LoadStationPosition(arm, pivot));
