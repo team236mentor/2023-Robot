@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.util.WPILibVersion;
 public class ArmPID extends CommandBase {
   /** Creates a new ArmPID. */
   private Arm arm3;
-  private double armDistance;
+  private double armDistance, armSpeed;
   private final PIDController armPidController;
 
   public ArmPID(Arm armpid, double armDistance) {
@@ -45,14 +45,17 @@ public class ArmPID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-   /* if ((armDistance > 0) && arm3.isAExtendLimit()) {
-      return true;
-    } else if ((armDistance < 0) && arm3.isAReturnLimit()) {
-      arm3.resetArmEncoder();
+      //stop when near target and commanded speed close to 0
+  if ((arm3.getArmDistance() > 0.9*armDistance)&& (Math.abs(armSpeed) < 0.02)) {
+    SmartDashboard.putBoolean("ArmPID Finished?", true);
+    return true;
+  } else if (arm3.isARetLimit() && armSpeed < 0) {
+    return true; }
+    else if (arm3.isAExtLimit() && armSpeed> 0) {
       return true;
     } else {
-      return false;
-    }*/
+    SmartDashboard.putBoolean("ArmPID Finished?", false);
+    return false;
+  }
   }
 }

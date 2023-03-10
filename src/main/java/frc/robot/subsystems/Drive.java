@@ -177,7 +177,9 @@ public class Drive extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.getBoolean("In Low Gear?", inLowGear());
+    SmartDashboard.putNumber("pitch", navX.getPitch());
+    SmartDashboard.putNumber("roll", navX.getRoll());
+    //SmartDashboard.getBoolean("In Low Gear?", inLowGear());
     //SmartDashboard.putNumber("left enc", getLeftEncoder());
     //SmartDashboard.putNumber("right enc", getRightEncoder());
     //SmartDashboard.putNumber("rightDis", getRightDistance());

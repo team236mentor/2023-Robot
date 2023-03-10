@@ -13,9 +13,13 @@ import frc.robot.commands.Arm.ArmRetract;
 import frc.robot.commands.Arm.ArmWithAxis;
 import frc.robot.commands.Autos.AutoPIDDrive;
 import frc.robot.commands.Autos.AutoTrapezoidalPID;
+import frc.robot.commands.Autos.BackwardCenter;
+import frc.robot.commands.Autos.BalanceOnChargeAuto;
 import frc.robot.commands.Autos.DriveAtSetSpeed;
 import frc.robot.commands.Autos.GrabScoreFlatGround;
+import frc.robot.commands.Autos.ScoreToCenter;
 import frc.robot.commands.Autos.TurnPID;
+import frc.robot.commands.Drive.AutoBalanceGyro;
 import frc.robot.commands.Drive.DoubleArcadeDrive;
 //import frc.robot.commands.Drive.DriveWithJoysticks;
 import frc.robot.commands.Drive.TDWG_No;
@@ -25,11 +29,18 @@ import frc.robot.commands.Gripper.Grab;
 import frc.robot.commands.Gripper.GrabReleaseToggle;
 import frc.robot.commands.Gripper.ReleasePiece;
 import frc.robot.commands.Pivot.PivotDown;
-import frc.robot.commands.Pivot.Pivot45PID;
+import frc.robot.commands.Pivot.PivotPID;
 import frc.robot.commands.Pivot.PivotUp;
+import frc.robot.commands.ScoringPositions.LoadStationPosition;
+import frc.robot.commands.ScoringPositions.PickupPosition;
+import frc.robot.commands.ScoringPositions.ScoreHighPosition;
+import frc.robot.commands.ScoringPositions.ScoreLow;
+import frc.robot.commands.ScoringPositions.ScoreMiddlePosition;
+import frc.robot.commands.ScoringPositions.StowPosition;
 import frc.robot.commands.Targeting.AprilFollow;
 import frc.robot.commands.Targeting.LLAngle;
 import frc.robot.commands.Targeting.LLDistance;
+import frc.robot.commands.Targeting.LLTarget;
 import frc.robot.commands.Turret.TurretCCW;
 import frc.robot.commands.Turret.TurretCW;
 import frc.robot.commands.Turret.TurretPID;
@@ -37,10 +48,15 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Gripper;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Turret;
 import org.photonvision.PhotonCamera;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -60,20 +76,31 @@ public class RobotContainer {
   private final Arm arm = new Arm();
   private final Gripper gripper = new Gripper();
   private final Turret turret = new Turret();
+  private final Pivot pivot = new Pivot();
+  private static DigitalInput autoSwitch1 = new DigitalInput(Constants.DriveConstants.DIO_AUTO_1);
+  private static DigitalInput autoSwitch2 = new DigitalInput(Constants.DriveConstants.DIO_AUTO_2);
+  private static DigitalInput autoSwitch3 = new DigitalInput(Constants.DriveConstants.DIO_AUTO_3);
+  private static DigitalInput autoSwitch4 = new DigitalInput(Constants.DriveConstants.DIO_AUTO_4);
+  // *DRIVE
+
 
   //COMMANDS****
   //AUTO
-
+  private final ScoreMiddlePosition scoreMiddleLevel = new ScoreMiddlePosition(pivot, arm, gripper);
+  //Command scoreMid = Commands.sequence(new PivotPID(arm, 10065).andThen(new ArmPID(arm, 7.25)).andThen(new ReleasePiece(gripper)));
+  private final StowPosition stowPosition = new StowPosition(arm, pivot);
   //DRIVE
  private final DoubleArcadeDrive doubleArcadeDrive = new DoubleArcadeDrive(drive, gripper, driveController);
  private final ToggleTransmission toggleTransmission = new ToggleTransmission(drive);
- private final LLAngle llAngle = new LLAngle(drive, 0);  //must pass in the pipeline
   /** Creates a new DriveToCS. */
  private final  DriveAtSetSpeed driveAtSetSpeed = new DriveAtSetSpeed(drive, 130, 0.5);
 
  //ARM
- private final PivotUp pivotUp = new PivotUp(arm, 0.4);
- private final PivotDown pivotDown = new PivotDown(arm, 0.3);
+ private final PivotUp pivotUp = new PivotUp(pivot, 0.4);
+ private final PivotDown pivotDown = new PivotDown(pivot, 0.3);
+ private final PivotPID pivotMidPID = new PivotPID(pivot, 10065);
+ private final PivotPID pivotHighPID = new PivotPID(pivot, 11188);
+ private final PivotPID pivotLowPID = new PivotPID(pivot, 4862);
 
  //GRIPPER
 private final Grab grab = new Grab(gripper);
@@ -130,35 +157,56 @@ private final TurretCCW turretCCW = new TurretCCW(turret, -TurretConstants.TURRE
     JoystickButton menu1 = new JoystickButton(controller, ControllerConstants.XboxController.MENU);
     POVButton upPov1 = new POVButton(controller, Constants.ControllerConstants.XboxController.POVXbox.UP_ANGLE);
     POVButton downPov1 = new POVButton(controller, Constants.ControllerConstants.XboxController.POVXbox.DOWN_ANGLE);
-  
-// ASSIGN BUTTONS TO COMMANDS
-  
-  //AUXController
-  //a1.whileTrue(new ArmPID(arm, 5)); // IT WORKS
-  //b1.whileTrue(new Pivot45PID(arm, 350));//pass in the encoder value that equates to 45 degrees
-  // y1.whileTrue(new TurretPID(turret, 3));
-  
-//DRIVECONTROLLER******
-   //lb.whileTrue(armRetract);
-   //x.whileTrue(new LLDistance(drive, 0, 35)); //pass in pipeline# and desired distance offset in inches
+    // ASSIGN BUTTONS TO COMMANDS
+    //AUXController
+   x1.whileTrue(new LLAngle(drive, 0)); //aprilTags
+   y1.whileTrue(new LLDistance(drive, 0, 40, 8)); //apriltags
+   b1.whileTrue(new LLTarget(drive, 0, 40, 8)); //must pass in the pipeline
+    a1.whileTrue(new AutoBalanceGyro(drive, driveController));
+
+
+    
+   //DRIVECONTROLLER******
   a.whileTrue(toggleTransmission);
   b.whileTrue(grabReleaseToggle);
-  b1.whileTrue(new ArmExtend(arm, 0.3));
-  x1.whileTrue(new ArmRetract(arm, 0.3));
-  // y.whileTrue(new AutoTrapezoidalPID(drive, 220, 0.005, 0, 0));
-  //rightPov.whileTrue(turretCW);
-  //leftPov.whileTrue(turretCCW);
- x.whileTrue(pivotUp);
- y.whileTrue(pivotDown);
+  x.whileTrue(new ScoreLow(arm, gripper, pivot));
+  y.whileTrue(new PickupPosition(arm, pivot));
+  rb.whileTrue(new LoadStationPosition(arm, pivot));
+ lb.whileTrue(scoreMiddleLevel);
+ rm.whileTrue(new ScoreHighPosition(arm, pivot, gripper));
+ lm.whileTrue(stowPosition);
+
+
+ upPov.whileTrue(pivotUp);
+ downPov.whileTrue(pivotDown);
+ rightPov.whileTrue(new ArmExtend(arm, 0.3));
+  leftPov.whileTrue(new ArmRetract(arm, 0.3));
 
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
    */
-  public boolean getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return(false);
+  public Command getAutonomousCommand() {
+    if (autoSwitch1.get() && !autoSwitch2.get() && !autoSwitch3.get() && !autoSwitch4.get()) {
+      return scoreMiddleLevel;
+    } else {
+      return releasePiece;
+    }
+     /*else if (!autoSwitch1.get() && !autoSwitch3.get()) {
+      return quadruplePosition1;
+    } else if (!autoSwitch1.get() && !autoSwitch4.get()) {
+      return extendedTriple1;
+    } else if (!autoSwitch1.get()) {
+      return doubleTarmac1;
+    } else if (!autoSwitch2.get()) {
+      return doubleTarmac2;
+    } else if (!autoSwitch3.get()) {
+      return triplePosition1;
+    } else if (!autoSwitch4.get()) {
+      return triplePosition2;
+    } else {
+      return doubleTarmac1;
+    }*/
+    //return doubleArcadeDrive;
   }
 }

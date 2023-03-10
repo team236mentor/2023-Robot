@@ -4,13 +4,13 @@
 
 package frc.robot.commands.Pivot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Pivot;
 
 public class PivotUp extends CommandBase {
-  private Arm pivot3;
+  private Pivot pivot3;
   private double speed3;
   /** Creates a new PivotCW. */
-  public PivotUp(Arm pivotup, double speedup) {
+  public PivotUp(Pivot pivotup, double speedup) {
     this.pivot3 = pivotup;
     this.speed3 = speedup;
     addRequirements(pivot3);
@@ -35,14 +35,9 @@ public class PivotUp extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-      /* if ((speed3 > 0.008) && pivot3.isPHighLimit()) {
-      return true;
-    } else if ((speed3 < 0) && pivot3.isPLowLimit()()) {
-      pivot3.resetPivotEncoder();
+    if (pivot3.isPHighLimit()) {
       return true;
     } else {
-      return false;
-    }*/
-    return false;
+    return false;}
   }
 }

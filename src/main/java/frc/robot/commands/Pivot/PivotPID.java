@@ -4,16 +4,17 @@
 
 package frc.robot.commands.Pivot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Pivot;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.PivotConstants;
 
-public class Pivot45PID extends CommandBase {
-  private Arm pivot2;
-  private double pvtTarget;
+public class PivotPID extends CommandBase {
+  private Pivot pivot2;
+  private double pvtTarget, pvtSpeed;
   private final PIDController pvtPidController;
   /** Creates a new PivotPID. */
-  public Pivot45PID(Arm m_pivotpid2, double m_pvtTarget) {
+  public PivotPID(Pivot m_pivotpid2, double m_pvtTarget) {
     this.pivot2 = m_pivotpid2;
     addRequirements(pivot2);
     this.pvtTarget = m_pvtTarget;
@@ -31,7 +32,7 @@ public class Pivot45PID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   double pvtSpeed = pvtPidController.calculate(pivot2.getPivotEncoder());
+   pvtSpeed = pvtPidController.calculate(pivot2.getPivotEncoder());
   pivot2.setPivotSpeed(pvtSpeed);
   }
 
@@ -44,7 +45,11 @@ public class Pivot45PID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+   if (pivot2.getPivotEncoder() >= Math.abs(0.97*pvtTarget)) {
+    return true;
+   } else {
     return false;
+   }
     
   }
 }

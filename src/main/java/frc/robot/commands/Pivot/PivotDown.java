@@ -3,14 +3,15 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.Pivot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Pivot;
 import frc.robot.Constants.PivotConstants;
 public class PivotDown extends CommandBase {
-  private Arm pivot4;
+  private Pivot pivot4;
   private double speed4;
   /** Creates a new PivotCCW. */
-  public PivotDown(Arm pivotdown, double speeddown) {
+  public PivotDown(Pivot pivotdown, double speeddown) {
     this.pivot4 = pivotdown;
     this.speed4 = speeddown;
     addRequirements(pivot4);
@@ -36,14 +37,13 @@ public class PivotDown extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    /*  if ((speed4 > 0.008) && pivot4.isPHighLimit()) {
-      return true;
-    } else if ((speed4 < 0) && pivot4.isPLowLimit()()) {
-      pivot4.resetPivotEncoder();
-      return true;
-    } else {
-      return false;
-    }*/
+   if (pivot4.isPLowLimit()) {
+   pivot4.resetPivotEncoder();
+   
+   return true; }
+   else {
     return false;
+   }
+
   }
 }

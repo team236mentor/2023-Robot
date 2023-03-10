@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     compressor.enableDigital();
+    
     //USB camera
 		/*try {
       usbCamera0 = CameraServer.startAutomaticCapture(0);
@@ -45,9 +46,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("camera capture filed", "failed");
 }*/
   //Need to do this once only in order to have Limelight communication while tethered
-  //for (int port = 5800; port <= 5805; port++){
-  //  PortForwarder.add(port, "limeelight.local", port);
-  //}
+  for (int port = 5800; port <= 5805; port++){
+    PortForwarder.add(port, "limelight.local", port);
+  }
   }
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -75,6 +76,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+  
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
