@@ -9,8 +9,8 @@ import frc.robot.subsystems.Gripper;
 public class ReleasePiece extends CommandBase {
   private Gripper gripper;
   /** Creates a new ReleasePiece. */
-  public ReleasePiece(Gripper relGripper) {
-    this.gripper = relGripper;
+  public ReleasePiece(Gripper _relGripper) {
+    this.gripper = _relGripper;
     addRequirements(gripper);
   }
 

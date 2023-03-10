@@ -9,9 +9,9 @@ public class ArmRetract extends CommandBase {
   /** Creates a new ArmRetract. */
   private Arm arm;
   private double speed;
-  public ArmRetract(Arm armRet, double speedRet) {
-  this.arm = armRet;
-  this.speed = speedRet;
+  public ArmRetract(Arm _armRet, double _speedRet) {
+  this.arm = _armRet;
+  this.speed = _speedRet;
   addRequirements(arm);
   }
   // Called when the command is initially scheduled.

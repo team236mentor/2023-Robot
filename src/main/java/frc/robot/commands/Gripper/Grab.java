@@ -13,8 +13,8 @@ public class Grab extends CommandBase {
   private Gripper gripper;
   
   /** Creates a new Grab. */
-  public Grab(Gripper grabGripper) {
-    this.gripper = grabGripper;
+  public Grab(Gripper _grabGripper) {
+    this.gripper = _grabGripper;
     addRequirements(gripper);
   }
   // Called when the command is initially scheduled.

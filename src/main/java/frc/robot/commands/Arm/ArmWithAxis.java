@@ -13,9 +13,9 @@ public class ArmWithAxis extends CommandBase {
   private XboxController controller;
   private double speed;
 
-  public ArmWithAxis(Arm armaxis, XboxController passed_controller) {
-    this.arm = armaxis;
-    this.controller = passed_controller;
+  public ArmWithAxis(Arm _armaxis, XboxController _controller) {
+    this.arm = _armaxis;
+    this.controller = _controller;
     addRequirements(arm);
   }
 

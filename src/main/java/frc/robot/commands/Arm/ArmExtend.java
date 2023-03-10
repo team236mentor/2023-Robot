@@ -11,10 +11,10 @@ public class ArmExtend extends CommandBase {
   /** Creates a new ArmExtend. */
   private Arm arm;
   private double speed;
-  public ArmExtend(Arm armExt, double speedExt) {
+  public ArmExtend(Arm _armExt, double _speedExt) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.arm = armExt;
-    this.speed = speedExt;
+    this.arm = _armExt;
+    this.speed = _speedExt;
     addRequirements(arm);
   }
 

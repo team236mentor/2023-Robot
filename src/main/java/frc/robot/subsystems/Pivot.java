@@ -20,6 +20,7 @@ public class Pivot extends SubsystemBase {
   private boolean isPHighUnplugged = false;
   private boolean isPLowUnplugged = false;
   private TalonSRX pivotMotor;
+  
   /** Creates a new Pivot. */
   public Pivot() {
     pivotMotor = new TalonSRX(Constants.MotorControllers.ID_PIVOT); //check ID number, brushed

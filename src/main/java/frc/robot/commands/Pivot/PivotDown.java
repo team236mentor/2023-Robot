@@ -10,10 +10,11 @@ import frc.robot.Constants.PivotConstants;
 public class PivotDown extends CommandBase {
   private Pivot pivot;
   private double speed;
+  
   /** Creates a new PivotCCW. */
-  public PivotDown(Pivot _pivotdown, double _speeddown) {
-    this.pivot = _pivotdown;
-    this.speed = _speeddown;
+  public PivotDown(Pivot _pivot, double _speed) {
+    this.pivot = _pivot;
+    this.speed = _speed;
     addRequirements(pivot);
     // Use addRequirements() here to declare subsystem dependencies.
   }

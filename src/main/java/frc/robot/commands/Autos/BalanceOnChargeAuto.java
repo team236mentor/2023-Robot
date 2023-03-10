@@ -14,13 +14,13 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class BalanceOnChargeAuto extends SequentialCommandGroup {
   /** Creates a new BalanceOnChargeAuto. */
-  public BalanceOnChargeAuto(Drive driveauto,  XboxController driveController1) {
+  public BalanceOnChargeAuto(Drive _driveauto,  XboxController _driveController1) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveAtSetSpeed(driveauto, 164, -0.4),
+      new DriveAtSetSpeed(_driveauto, 164, -0.4),
       new WaitCommand(0.5),
-      new DriveAtSetSpeed(driveauto, 100, 0.4)
+      new DriveAtSetSpeed(_driveauto, 100, 0.4)
       //, new AutoBalanceGyro(driveauto, driveController1)
     );
   }
