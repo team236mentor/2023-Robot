@@ -41,6 +41,11 @@ public class Gripper extends SubsystemBase {
     public void release() {
       gripperSolenoid.set(Value.kReverse);
     }
+
+    //makes the gripper toggle
+    public void toggle() {
+      gripperSolenoid.toggle();;
+    }
   
     //Tells if the gripper is gripping or not
   public boolean isGripping() {
