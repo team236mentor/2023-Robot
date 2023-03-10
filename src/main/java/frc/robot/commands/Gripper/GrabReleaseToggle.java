@@ -9,9 +9,10 @@ import frc.robot.subsystems.Gripper;
 public class GrabReleaseToggle extends CommandBase{ 
   private Gripper gripper;
   private boolean toggle;
+
   /** Creates a new GrabReleaseToggle. */
-  public GrabReleaseToggle(Gripper gripper) {
-    this.gripper=gripper;
+  public GrabReleaseToggle(Gripper passed_gripper) {
+    this.gripper=passed_gripper;
     addRequirements(gripper);
   }
 
