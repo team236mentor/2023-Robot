@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ArmExtend extends CommandBase {
   /** Creates a new ArmExtend. */
-  private Arm arm1;
-  private double speed1;
+  private Arm arm;
+  private double speed;
   public ArmExtend(Arm armExt, double speedExt) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.arm1 = armExt;
-    this.speed1 = speedExt;
-    addRequirements(arm1);
+    this.arm = armExt;
+    this.speed = speedExt;
+    addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
@@ -26,19 +26,19 @@ public class ArmExtend extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm1.setArmSpeed(speed1);
+    arm.setArmSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm1.armStop();
+    arm.armStop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((arm1.isAExtLimit())) {
+    if ((arm.isAExtLimit())) {
       return true;
     } else {
       return false;

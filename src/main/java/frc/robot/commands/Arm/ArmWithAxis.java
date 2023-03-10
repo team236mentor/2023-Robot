@@ -9,13 +9,14 @@ import frc.robot.subsystems.Arm;
 import frc.robot.Constants.ControllerConstants;
 public class ArmWithAxis extends CommandBase {
   /** Creates a new ArmWithAxis. */
-  private Arm arm4;
+  private Arm arm;
   private XboxController controller;
   private double speed;
 
-  public ArmWithAxis(Arm armaxis, XboxController controller) {
-    this.arm4 = armaxis;
-    addRequirements(arm4);
+  public ArmWithAxis(Arm armaxis, XboxController passed_controller) {
+    this.arm = armaxis;
+    this.controller = passed_controller;
+    addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
@@ -25,13 +26,13 @@ public class ArmWithAxis extends CommandBase {
   @Override
   public void execute() {
     double speed = -controller.getRawAxis(ControllerConstants.XboxController.AxesXbox.LY);
-    arm4.setArmSpeed(speed);
+    arm.setArmSpeed(speed);
     
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm4.armStop();
+    arm.armStop();
   }
   // Returns true when the command should end.
   @Override

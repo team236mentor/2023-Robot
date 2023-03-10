@@ -19,10 +19,10 @@ public class DoubleArcadeDrive extends CommandBase {
   private XboxController driveController;
   private AHRS navX;
   /** Creates a new DoubleArcadeDrive. */
-  public DoubleArcadeDrive(Drive drive1, Gripper gripper1, XboxController driveController1) {
+  public DoubleArcadeDrive(Drive drive1, Gripper gripper1, XboxController _driveController) {
     this.gripper = gripper1;
     this.drive = drive1;
-    this.driveController = driveController1;
+    this.driveController = _driveController;
     addRequirements(gripper);
     addRequirements(drive);
   }

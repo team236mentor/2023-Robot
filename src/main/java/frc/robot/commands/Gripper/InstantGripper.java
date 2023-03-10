@@ -14,8 +14,8 @@ public class InstantGripper extends InstantCommand {
   private Gripper gripper;
   private boolean toggle;
 
-  public InstantGripper(Gripper passed_gripper) { 
-    this.gripper=passed_gripper;
+  public InstantGripper(Gripper _gripper) { 
+    this.gripper=_gripper;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(gripper);
   }

@@ -5,8 +5,6 @@
 package frc.robot.commands.Drive;
 import frc.robot.subsystems.Drive;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 
@@ -22,9 +20,10 @@ public class AutoBalanceGyro extends CommandBase {
   private Drive drive;
 
   /** Creates a new AutoBalanceGyro. */
-  public AutoBalanceGyro(Drive drive, XboxController driveController) {
+  public AutoBalanceGyro(Drive _drive, XboxController _driveController) {
     navx = new AHRS();
-    this.drive = drive;
+    this.drive = _drive;
+    this.driveController=_driveController;
     addRequirements(drive);
     // Use addRequirements() here to declare subsystem dependencies.
   }

@@ -17,15 +17,15 @@ import frc.robot.subsystems.Turret;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class GrabScoreFlatGround extends SequentialCommandGroup {
   /** Creates a new GrabPieceandScore. */
-  public GrabScoreFlatGround(Drive drive, Gripper gripper, Arm Arm, Turret turret) {
+  public GrabScoreFlatGround(Drive _drive, Gripper _gripper, Arm _arm, Turret _turret) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new AutoPIDDrive(drive, 225),
-      new Grab(gripper),
-      new AutoPIDDrive(drive, -225),
+      new AutoPIDDrive(_drive, 225),
+      new Grab(_gripper),
+      new AutoPIDDrive(_drive, -225),
       //new TargetLimelight or something that turns the turret automatically
-      new ReleasePiece(gripper)
+      new ReleasePiece(_gripper)
     );
   }
 }

@@ -4,12 +4,13 @@
 
 package frc.robot.commands.ScoringPositions;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.commands.Arm.ArmPID;
-import frc.robot.commands.Gripper.GrabReleaseToggle;
 import frc.robot.commands.Gripper.ReleasePiece;
 import frc.robot.commands.Pivot.PivotPID;
 import frc.robot.subsystems.Arm;
@@ -23,16 +24,22 @@ public class ScoreLow extends SequentialCommandGroup {
 
   
   /** Creates a new ScoreMiddleLevel. */
-  public ScoreLow(Arm lowScore, Gripper gripScore2, Pivot pvtLow) {
+  public ScoreLow(Arm _lowScore, Gripper _gripScore, Pivot _pvtLow) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
+    Gripper gripScore = _gripScore;
+    CommandBase temp;
+
     addCommands(
-   
-     //new GrabReleaseToggle(gripScore1),
-      new PivotPID(pvtLow, PivotConstants.PVT_ENC_LOW_SCORE).withTimeout(1),
-      new ArmPID(lowScore, 0)//,
-      //new WaitCommand(0.5), new GrabReleaseToggle(gripScore2)
-      );
+        //new GrabReleaseToggle(gripScore1),
+      new PivotPID(_pvtLow, PivotConstants.PVT_ENC_LOW_SCORE).withTimeout(1),
+      new ArmPID(_lowScore, 0)  
+      
+      // several attempts using lambda to use the subsystem toggle method 
+       // CommandBase toggleGripper1 = runOnce(() -> gripScore.toggle(), _gripScore);)
+       // Command toggleGripper2 = runOnce( () -> { this.gripScore.toggle(); }, _gripScore),
+       // temp = runOnce(() -> gripScore.toggle(),_gripScore)
+    );
       
   }
 }

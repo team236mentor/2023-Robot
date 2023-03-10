@@ -16,11 +16,11 @@ import frc.robot.subsystems.Pivot;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LoadStationPosition extends SequentialCommandGroup {
   /** Creates a new LoadStationPosition. */
-  public LoadStationPosition(Arm loadStation, Pivot loadPivot) {
+  public LoadStationPosition(Arm _loadStation, Pivot _loadPivot) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new PivotPID(loadPivot, Constants.PivotConstants.PVT_ENC_LOAD_STN).withTimeout(1),
-    new ArmPID(loadStation, Constants.ArmConstants.ARM_LOAD_STN));
+    addCommands(new PivotPID(_loadPivot, Constants.PivotConstants.PVT_ENC_LOAD_STN).withTimeout(1),
+    new ArmPID(_loadStation, Constants.ArmConstants.ARM_LOAD_STN));
   }
 }
 

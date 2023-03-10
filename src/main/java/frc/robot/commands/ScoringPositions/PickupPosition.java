@@ -15,12 +15,12 @@ import frc.robot.subsystems.Pivot;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PickupPosition extends SequentialCommandGroup {
   /** Creates a new PickupPosition. */
-  public PickupPosition(Arm armPickup, Pivot pvtPickup) {
+  public PickupPosition(Arm _armPickup, Pivot _pvtPickup) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new PivotPID(pvtPickup, 1225),
-      new ArmPID(armPickup, 6.55)
+      new PivotPID(_pvtPickup, 1225),
+      new ArmPID(_armPickup, 6.55)
     );
   }
 }
