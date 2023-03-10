@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.commands.Arm.ArmPID;
-import frc.robot.commands.Gripper.GrabReleaseToggle;
 import frc.robot.commands.Gripper.ReleasePiece;
 import frc.robot.commands.Pivot.PivotPID;
 import frc.robot.subsystems.Arm;

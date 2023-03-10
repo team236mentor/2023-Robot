@@ -166,7 +166,7 @@ private final TurretCCW turretCCW = new TurretCCW(turret, -TurretConstants.TURRE
     
    //DRIVECONTROLLER******
   a.whileTrue(toggleTransmission);
-  b.whileTrue(gripper.toggle(););
+  // b.whileTrue(gripper.toggle());
   x.whileTrue(new ScoreLow(arm, gripper, pivot));
   y.whileTrue(new PickupPosition(arm, pivot));
   rb.whileTrue(new LoadStationPosition(arm, pivot));
